@@ -1,0 +1,195 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-active: var(--sidebar-active);
+  --font-sans: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+:root {
+  --background: #eef2f5;
+  --foreground: #0b1f33;
+  --card: #ffffff;
+  --muted: #e4ebf1;
+  --muted-foreground: #4a6074;
+  --primary: #0b4f6c;
+  --primary-foreground: #f4fafc;
+  --primary-soft: #d7eef6;
+  --accent: #c45c26;
+  --accent-foreground: #fff8f3;
+  --destructive: #b42318;
+  --success: #0f7a4f;
+  --warning: #b45309;
+  --border: #c9d6e1;
+  --ring: #2a9dba;
+  --sidebar: #0b1f33;
+  --sidebar-foreground: #d7e4ef;
+  --sidebar-active: #134e6f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100dvh;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 100% -10%, rgba(42, 157, 186, 0.12), transparent),
+    radial-gradient(ellipse 60% 40% at 0% 100%, rgba(196, 92, 38, 0.08), transparent),
+    var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+input,
+select,
+textarea,
+button {
+  font: inherit;
+}
+
+.ff-input {
+  width: 100%;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background: #f8fbfd;
+  padding: 0 0.75rem;
+  color: var(--foreground);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+
+.ff-input:focus {
+  border-color: var(--ring);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(42, 157, 186, 0.2);
+}
+
+.ff-textarea {
+  width: 100%;
+  min-height: 5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background: #f8fbfd;
+  padding: 0.65rem 0.75rem;
+  color: var(--foreground);
+  outline: none;
+  resize: vertical;
+}
+
+.ff-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted-foreground);
+  letter-spacing: 0.01em;
+}
+
+.ff-section {
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: var(--card);
+  padding: 1.25rem;
+  box-shadow: 0 1px 0 rgba(11, 31, 51, 0.04);
+}
+
+.ff-section-title {
+  margin: 0 0 1rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+
+.ff-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  height: 2.5rem;
+  border-radius: 0.6rem;
+  border: 1px solid transparent;
+  padding: 0 1rem;
+  font-size: 0.9rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: transform 0.12s ease, opacity 0.12s ease, background 0.12s ease;
+}
+
+.ff-btn:hover {
+  transform: translateY(-1px);
+}
+
+.ff-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+}
+
+.ff-btn-primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.ff-btn-accent {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.ff-btn-ghost {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--foreground);
+}
+
+.ff-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  color: var(--foreground);
+}
+
+.ff-grid-2 {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ff-grid-3 {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 900px) {
+  .ff-grid-2,
+  .ff-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}

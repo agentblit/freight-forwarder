@@ -1,0 +1,20 @@
+CREATE TABLE "orders" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"tracking_number" text NOT NULL,
+	"pickup_confirmation_number" text NOT NULL,
+	"waybill_number" text NOT NULL,
+	"mode" text NOT NULL,
+	"status" text DEFAULT 'booked' NOT NULL,
+	"ship_from_company" text,
+	"ship_from_port" text,
+	"deliver_to_company" text,
+	"deliver_to_port" text,
+	"cargo_ready_date" text,
+	"expected_delivery" timestamp with time zone,
+	"total_price_usd" integer,
+	"payload" jsonb NOT NULL,
+	"confirmation" jsonb NOT NULL,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
+	CONSTRAINT "orders_tracking_number_unique" UNIQUE("tracking_number")
+);
