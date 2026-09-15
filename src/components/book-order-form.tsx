@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
+import { useSearchParams } from "next/navigation";
 import { Plus, Trash2, AlertTriangle, CheckCircle2, Loader2 } from "lucide-react";
 import {
   createEmptyBookingForm,
@@ -27,7 +28,9 @@ import { AgentPanel } from "@/components/agent-panel";
 import { CheckRow, Field, Section } from "@/components/form-ui";
 import { PartyDetailsSection } from "@/components/party-section";
 
-export function BookOrderForm() {
+export function BookOrderForm({ agentEmbedUrl }: { agentEmbedUrl: string }) {
+  const searchParams = useSearchParams();
+  const sessionId = searchParams.get("session_id")?.trim() || null;
   const [form, setForm] = useState<BookingFormState>(() =>
     createEmptyBookingForm(),
   );
@@ -782,7 +785,7 @@ export function BookOrderForm() {
       </form>
 
       <div className="flex h-[min(70vh,560px)] min-h-0 w-full min-w-0 flex-1 flex-col lg:h-full">
-        <AgentPanel />
+        <AgentPanel src={agentEmbedUrl} sessionId={sessionId} />
       </div>
     </div>
   );

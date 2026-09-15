@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Plane,
   Ship,
@@ -11,6 +11,14 @@ import {
 } from "lucide-react";
 import type { OrderSummary } from "@/lib/types";
 
+function newBookOrderHref() {
+  const sessionId =
+    typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  return `/book-order?session_id=${encodeURIComponent(sessionId)}`;
+}
+
 type Summary = {
   total: number;
   air: number;
@@ -19,6 +27,7 @@ type Summary = {
 };
 
 export function DashboardView() {
+  const router = useRouter();
   const [orders, setOrders] = useState<OrderSummary[]>([]);
   const [summary, setSummary] = useState<Summary>({
     total: 0,
@@ -28,6 +37,10 @@ export function DashboardView() {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const goBookOrder = () => {
+    router.push(newBookOrderHref());
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -92,10 +105,14 @@ export function DashboardView() {
             Orders summary across ocean and air bookings.
           </p>
         </div>
-        <Link href="/book-order" className="ff-btn ff-btn-primary">
+        <button
+          type="button"
+          onClick={goBookOrder}
+          className="ff-btn ff-btn-primary"
+        >
           <Plus className="h-4 w-4" />
           Book order
-        </Link>
+        </button>
       </header>
 
       <div className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -136,12 +153,13 @@ export function DashboardView() {
             <p className="text-sm text-muted-foreground">
               No bookings yet. Create your first order to see it here.
             </p>
-            <Link
-              href="/book-order"
+            <button
+              type="button"
+              onClick={goBookOrder}
               className="ff-btn ff-btn-primary mt-4 inline-flex"
             >
               Book order
-            </Link>
+            </button>
           </div>
         ) : (
           <div className="overflow-x-auto">
