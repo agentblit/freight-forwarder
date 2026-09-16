@@ -86,17 +86,32 @@ async function connectWithRetry(target: URL, apiKey: string, attempts = 3) {
 
 /**
  * Proxies form-filling-connector SSE (API key stays server-side).
- * Uses Node https with IPv4 + retries to avoid intermittent ConnectTimeout.
+ * Forwards optional `session_id` query param to the upstream connector.
+ *
+ * Browser: GET /api/form-fill/stream?session_id=...
  */
-export async function GET() {
+export async function GET(request: Request) {
   const config = buildUpstream();
   if ("error" in config) {
     return NextResponse.json({ error: config.error }, { status: 500 });
   }
 
+  const incoming = new URL(request.url);
+  const sessionId =
+    incoming.searchParams.get("session_id")?.trim() ||
+    process.env.FORM_FILL_SESSION_ID?.trim() ||
+    null;
+
+  const target = new URL(config.url.toString());
+  if (sessionId) {
+    target.searchParams.set("session_id", sessionId);
+  } else {
+    target.searchParams.delete("session_id");
+  }
+
   let upstream: Awaited<ReturnType<typeof connectWithRetry>>;
   try {
-    upstream = await connectWithRetry(config.url, config.apiKey);
+    upstream = await connectWithRetry(target, config.apiKey);
   } catch (error) {
     console.error("form-fill SSE upstream connect failed", error);
     return NextResponse.json(

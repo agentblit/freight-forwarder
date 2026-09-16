@@ -24,13 +24,18 @@ import type {
   ShipmentItem,
 } from "@/lib/types";
 import { useFormFillStream } from "@/hooks/use-form-fill-stream";
+import {
+  getOrCreateBookingSessionId,
+  persistBookingSessionId,
+} from "@/lib/booking-session";
 import { AgentPanel } from "@/components/agent-panel";
 import { CheckRow, Field, Section } from "@/components/form-ui";
 import { PartyDetailsSection } from "@/components/party-section";
 
 export function BookOrderForm({ agentEmbedUrl }: { agentEmbedUrl: string }) {
   const searchParams = useSearchParams();
-  const sessionId = searchParams.get("session_id")?.trim() || null;
+  const urlSessionId = searchParams.get("session_id")?.trim() || null;
+  const [sessionId, setSessionId] = useState<string | null>(urlSessionId);
   const [form, setForm] = useState<BookingFormState>(() =>
     createEmptyBookingForm(),
   );
@@ -43,6 +48,20 @@ export function BookOrderForm({ agentEmbedUrl }: { agentEmbedUrl: string }) {
   const [originManual, setOriginManual] = useState(false);
   const [destinationManual, setDestinationManual] = useState(false);
 
+  // One session_id for both embedded agent and form-fill SSE.
+  useEffect(() => {
+    if (urlSessionId) {
+      persistBookingSessionId(urlSessionId);
+      setSessionId(urlSessionId);
+      return;
+    }
+    const id = getOrCreateBookingSessionId();
+    setSessionId(id);
+    const url = new URL(window.location.href);
+    url.searchParams.set("session_id", id);
+    window.history.replaceState(null, "", url.toString());
+  }, [urlSessionId]);
+
   const onFormFillData = useCallback((data: Record<string, unknown>) => {
     if ("originCode" in data) setOriginManual(true);
     else if ("exporter" in data) setOriginManual(false);
@@ -53,6 +72,8 @@ export function BookOrderForm({ agentEmbedUrl }: { agentEmbedUrl: string }) {
   }, []);
 
   useFormFillStream({
+    enabled: Boolean(sessionId),
+    sessionId: sessionId ?? "",
     onData: onFormFillData,
   });
 
