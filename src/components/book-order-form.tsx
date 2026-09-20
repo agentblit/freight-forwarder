@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
-import { useSearchParams } from "next/navigation";
-import { Plus, Trash2, AlertTriangle, CheckCircle2, Loader2 } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Plus, Trash2, AlertTriangle, Loader2 } from "lucide-react";
 import {
   createEmptyBookingForm,
   OCEAN_CONTAINER_OPTIONS,
@@ -19,7 +19,6 @@ import {
 } from "@/lib/locations";
 import type {
   AirPackage,
-  BookingConfirmation,
   BookingFormState,
   ShipmentItem,
 } from "@/lib/types";
@@ -33,6 +32,7 @@ import { CheckRow, Field, Section } from "@/components/form-ui";
 import { PartyDetailsSection } from "@/components/party-section";
 
 export function BookOrderForm({ agentEmbedUrl }: { agentEmbedUrl: string }) {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const urlSessionId = searchParams.get("session_id")?.trim() || null;
   const [sessionId, setSessionId] = useState<string | null>(urlSessionId);
@@ -41,9 +41,6 @@ export function BookOrderForm({ agentEmbedUrl }: { agentEmbedUrl: string }) {
   );
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [confirmation, setConfirmation] = useState<BookingConfirmation | null>(
-    null,
-  );
   /** When true, skip overwriting that end until address/mode changes. */
   const [originManual, setOriginManual] = useState(false);
   const [destinationManual, setDestinationManual] = useState(false);
@@ -179,7 +176,6 @@ export function BookOrderForm({ agentEmbedUrl }: { agentEmbedUrl: string }) {
     e.preventDefault();
     setSubmitting(true);
     setError(null);
-    setConfirmation(null);
 
     try {
       const res = await fetch("/api/orders", {
@@ -208,10 +204,9 @@ export function BookOrderForm({ agentEmbedUrl }: { agentEmbedUrl: string }) {
       if (!res.ok) {
         throw new Error(data.error ?? "Failed to submit booking");
       }
-      setConfirmation(data.confirmation as BookingConfirmation);
+      router.push("/dashboard");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Submit failed");
-    } finally {
       setSubmitting(false);
     }
   }
@@ -740,40 +735,6 @@ export function BookOrderForm({ agentEmbedUrl }: { agentEmbedUrl: string }) {
           </div>
         ) : null}
 
-        {confirmation ? (
-          <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-4 text-emerald-950">
-            <div className="mb-3 flex items-center gap-2 font-semibold">
-              <CheckCircle2 className="h-5 w-5" />
-              Booking confirmed and saved
-            </div>
-            <dl className="grid gap-2 text-sm sm:grid-cols-2">
-              <div>
-                <dt className="text-emerald-800/80">Expected delivery</dt>
-                <dd className="font-semibold">
-                  {new Date(confirmation.expectedDelivery).toLocaleString()}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-emerald-800/80">Tracking number</dt>
-                <dd className="font-semibold">{confirmation.trackingNumber}</dd>
-              </div>
-              <div>
-                <dt className="text-emerald-800/80">
-                  {form.mode === "air" ? "Airwaybill" : "Seawaybill"} number
-                </dt>
-                <dd className="font-semibold">{confirmation.waybillNumber}</dd>
-              </div>
-              <div>
-                <dt className="text-emerald-800/80">Route</dt>
-                <dd className="font-semibold">
-                  {origin?.code ?? form.originCode} →{" "}
-                  {destination?.code ?? form.destinationCode}
-                </dd>
-              </div>
-            </dl>
-          </div>
-        ) : null}
-
         <div className="flex flex-wrap justify-end gap-3 pb-8">
           <button
             type="button"
@@ -782,7 +743,6 @@ export function BookOrderForm({ agentEmbedUrl }: { agentEmbedUrl: string }) {
               setForm(createEmptyBookingForm());
               setOriginManual(false);
               setDestinationManual(false);
-              setConfirmation(null);
               setError(null);
             }}
           >
