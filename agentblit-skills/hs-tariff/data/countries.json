@@ -1,0 +1,128 @@
+{
+  "IN": {
+    "pack": "IN",
+    "digits": 8,
+    "label": "India ITC-HS / HSN",
+    "file": "packs/IN/tariff.json"
+  },
+  "US": {
+    "pack": "US",
+    "digits": 10,
+    "label": "United States HTS",
+    "file": "packs/US/tariff.json"
+  },
+  "CN": {
+    "pack": "CN",
+    "digits": 10,
+    "label": "China Customs HS",
+    "file": "packs/CN/tariff.json"
+  },
+  "EU": {
+    "pack": "EU",
+    "digits": 8,
+    "label": "EU Combined Nomenclature",
+    "file": "packs/EU/tariff.json"
+  },
+  "DE": {
+    "pack": "EU",
+    "digits": 8,
+    "label": "EU Combined Nomenclature (Germany)",
+    "file": "packs/EU/tariff.json"
+  },
+  "FR": {
+    "pack": "EU",
+    "digits": 8,
+    "label": "EU Combined Nomenclature (France)",
+    "file": "packs/EU/tariff.json"
+  },
+  "NL": {
+    "pack": "EU",
+    "digits": 8,
+    "label": "EU Combined Nomenclature (Netherlands)",
+    "file": "packs/EU/tariff.json"
+  },
+  "IT": {
+    "pack": "EU",
+    "digits": 8,
+    "label": "EU Combined Nomenclature (Italy)",
+    "file": "packs/EU/tariff.json"
+  },
+  "ES": {
+    "pack": "EU",
+    "digits": 8,
+    "label": "EU Combined Nomenclature (Spain)",
+    "file": "packs/EU/tariff.json"
+  },
+  "BE": {
+    "pack": "EU",
+    "digits": 8,
+    "label": "EU Combined Nomenclature (Belgium)",
+    "file": "packs/EU/tariff.json"
+  },
+  "IE": {
+    "pack": "EU",
+    "digits": 8,
+    "label": "EU Combined Nomenclature (Ireland)",
+    "file": "packs/EU/tariff.json"
+  },
+  "PL": {
+    "pack": "EU",
+    "digits": 8,
+    "label": "EU Combined Nomenclature (Poland)",
+    "file": "packs/EU/tariff.json"
+  },
+  "AT": {
+    "pack": "EU",
+    "digits": 8,
+    "label": "EU Combined Nomenclature (Austria)",
+    "file": "packs/EU/tariff.json"
+  },
+  "SE": {
+    "pack": "EU",
+    "digits": 8,
+    "label": "EU Combined Nomenclature (Sweden)",
+    "file": "packs/EU/tariff.json"
+  },
+  "DK": {
+    "pack": "EU",
+    "digits": 8,
+    "label": "EU Combined Nomenclature (Denmark)",
+    "file": "packs/EU/tariff.json"
+  },
+  "FI": {
+    "pack": "EU",
+    "digits": 8,
+    "label": "EU Combined Nomenclature (Finland)",
+    "file": "packs/EU/tariff.json"
+  },
+  "PT": {
+    "pack": "EU",
+    "digits": 8,
+    "label": "EU Combined Nomenclature (Portugal)",
+    "file": "packs/EU/tariff.json"
+  },
+  "GR": {
+    "pack": "EU",
+    "digits": 8,
+    "label": "EU Combined Nomenclature (Greece)",
+    "file": "packs/EU/tariff.json"
+  },
+  "CZ": {
+    "pack": "EU",
+    "digits": 8,
+    "label": "EU Combined Nomenclature (Czechia)",
+    "file": "packs/EU/tariff.json"
+  },
+  "RO": {
+    "pack": "EU",
+    "digits": 8,
+    "label": "EU Combined Nomenclature (Romania)",
+    "file": "packs/EU/tariff.json"
+  },
+  "HU": {
+    "pack": "EU",
+    "digits": 8,
+    "label": "EU Combined Nomenclature (Hungary)",
+    "file": "packs/EU/tariff.json"
+  }
+}

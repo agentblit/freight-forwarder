@@ -300,7 +300,7 @@ export function BookOrderForm({ agentEmbedUrl }: { agentEmbedUrl: string }) {
                       }
                     />
                   </Field>
-                  <Field label="Harmonised code (HS code)">
+                  <Field label="Import tariff code (importer country)">
                     <input
                       className="ff-input"
                       value={item.hsCode}
