@@ -56,7 +56,7 @@ export function Sidebar() {
       window.location.assign(data.url);
       return;
     }
-    router.replace("/login");
+    window.location.assign("/login");
   }
 
   return (
