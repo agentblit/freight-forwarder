@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { DM_Sans, Geist_Mono } from "next/font/google";
-import { Sidebar } from "@/components/sidebar";
 import "./globals.css";
 
 const display = DM_Sans({
@@ -27,12 +26,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${display.variable} ${geistMono.variable} flex h-dvh overflow-hidden antialiased`}
+        className={`${display.variable} ${geistMono.variable} antialiased`}
       >
-        <Sidebar />
-        <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
-          {children}
-        </main>
+        {children}
       </body>
     </html>
   );

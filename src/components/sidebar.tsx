@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   ClipboardList,
   LayoutDashboard,
@@ -9,8 +9,10 @@ import {
   FileStack,
   ChevronLeft,
   ChevronRight,
+  LogOut,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { authClient } from "@/lib/auth-client";
 
 const NAV = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -22,7 +24,9 @@ const STORAGE_KEY = "ff-sidebar-expanded";
 
 export function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [expanded, setExpanded] = useState(true);
+  const { data: session } = authClient.useSession();
 
   useEffect(() => {
     try {
@@ -41,6 +45,19 @@ export function Sidebar() {
       // ignore
     }
   };
+
+  const signingOutRef = useRef(false);
+
+  async function onSignOut() {
+    if (signingOutRef.current) return;
+    signingOutRef.current = true;
+    const { data } = await authClient.signOut({ disableRedirect: true });
+    if (data?.url) {
+      window.location.assign(data.url);
+      return;
+    }
+    router.replace("/login");
+  }
 
   return (
     <aside
@@ -112,13 +129,24 @@ export function Sidebar() {
         })}
       </nav>
 
-      {expanded ? (
-        <div className="border-t border-white/10 px-4 py-4 text-xs text-[#7eb8d0]">
-          Sample booking workspace
-        </div>
-      ) : (
-        <div className="border-t border-white/10 py-3" />
-      )}
+      <div className={`border-t border-white/10 ${expanded ? "px-4 py-4" : "px-2 py-3"}`}>
+        {expanded && session?.user?.email ? (
+          <p className="mb-2 truncate text-xs text-[#7eb8d0]">
+            {session.user.email}
+          </p>
+        ) : null}
+        <button
+          type="button"
+          onClick={() => void onSignOut()}
+          title="Sign out"
+          className={`inline-flex cursor-pointer items-center rounded-lg text-sm font-medium text-[#7eb8d0] transition-colors hover:bg-white/10 hover:text-white ${
+            expanded ? "w-full gap-2.5 px-3 py-2.5" : "h-10 w-10 justify-center"
+          }`}
+        >
+          <LogOut className="h-4 w-4 shrink-0" />
+          {expanded ? "Sign out" : null}
+        </button>
+      </div>
     </aside>
   );
 }
